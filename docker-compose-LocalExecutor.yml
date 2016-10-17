@@ -1,0 +1,37 @@
+version: '2'
+services:
+    postgres:
+        image: postgres
+        environment:
+            - POSTGRES_USER=airflow
+            - POSTGRES_PASSWORD=airflow
+            - POSTGRES_DB=airflow
+
+    webserver:
+        # image: puckel/docker-airflow-2:latest
+        #image: 245739941934.dkr.ecr.us-east-1.amazonaws.com/docker-airflow-2
+        image: docker-airflow-2:latest
+        restart: always
+        links:
+            - postgres
+        environment:
+            # - LOAD_EX=n
+            - EXECUTOR=Local
+        volumes:
+            - ./dags:/usr/local/airflow/dags
+        ports:
+            - "8080:8080"
+        command: webserver
+
+    scheduler:
+        image: docker-airflow-2:latest
+    #    image: 245739941934.dkr.ecr.us-east-1.amazonaws.com/docker-airflow-2
+    #    restart: always
+        links:
+            - webserver
+        volumes:
+            - ./dags:/usr/local/airflow/dags
+        environment:
+            # - LOAD_EX=n
+            - EXECUTOR=Local
+        command: scheduler

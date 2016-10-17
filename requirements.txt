@@ -1,0 +1,9 @@
+Cython
+pytz==2015.7
+cryptography
+pyOpenSSL
+ndg-httpsclient
+pyasn1
+psycopg2
+airflow[postgresql]
+
